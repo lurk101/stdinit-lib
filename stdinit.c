@@ -17,24 +17,17 @@
 #include "tusb.h"
 #endif
 
-int stdio_init(void) {
-    int r = 0;
-
+void stdio_init(void) {
 #if LIB_PICO_STDIO_UART
     stdio_uart_init();        // setup uart 0
     getchar_timeout_us(1000); // discard initial garbage character
-    r |= STDIO_IS_UART;
 #endif
 
 #if LIB_PICO_STDIO_USB
     stdio_usb_init();            // setup usb endpoint
-    while (!tud_cdc_connected()) // wait for actual connection
-        sleep_ms(1000);
-    r |= STDIO_IS_USB;
 #endif
     // clear the screen on VT terminal
     static const char* clear = "\033[H\033[J";
     for (const char* cp = clear; *cp; cp++)
         putchar_raw(*cp);
-    return r;
 }
