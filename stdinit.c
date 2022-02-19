@@ -8,24 +8,9 @@
 #include "stdinit.h"
 
 #include "pico/stdio.h"
-#if LIB_PICO_STDIO_UART
-#include "pico/stdio_uart.h"
-#endif
-
-#if LIB_PICO_STDIO_USB
-#include "pico/stdio_usb.h"
-#include "tusb.h"
-#endif
 
 void stdio_init(void) {
-#if LIB_PICO_STDIO_UART
-    stdio_uart_init();        // setup uart 0
-    getchar_timeout_us(1000); // discard initial garbage character
-#endif
-
-#if LIB_PICO_STDIO_USB
-    stdio_usb_init();            // setup usb endpoint
-#endif
+    stdio_init_all();
     // clear the screen on VT terminal
     static const char* clear = "\033[H\033[J";
     for (const char* cp = clear; *cp; cp++)
