@@ -11,7 +11,7 @@
 
 void stdio_init(void) {
     stdio_init_all();
-    getchar_timeout_us(1);
+    getchar_timeout_us(250000);
     // clear the screen on VT terminal
     static const char* clear = "\033[H\033[J";
     for (const char* cp = clear; *cp; cp++)
